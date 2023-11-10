@@ -5,8 +5,10 @@ import { useState } from "react";
 function App() {
   const [activePlayer, setActivePlayer] = useState("X");
 
-  function handleActivePlayer() {
-    setActivePlayer((player) => player == "X" ? "O" : "X");
+  function handleActivePlayer(stopGame) {
+    if(!stopGame) {
+      setActivePlayer((player) => player == "X" ? "O" : "X");
+    }
   }
 
   return (
@@ -17,7 +19,7 @@ function App() {
           <PlayerInfo initialName="Player 2" symbol="O" isActive={activePlayer}></PlayerInfo>
         </ol>
 
-        <GameBoard onSelectSquare={handleActivePlayer} symbol={activePlayer}></GameBoard>
+        <GameBoard onSelectSquare={(gameStopped) => handleActivePlayer(gameStopped)} symbol={activePlayer}></GameBoard>
       </div>
     </main>
   )

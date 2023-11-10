@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import mario from "../assets/mario.png";
+import luigi from "../assets/luigi.ico";
+
 const initialGameBoard = [
     [null, null, null],
     [null, null, null],
@@ -20,6 +23,7 @@ const winMap = [
 let player1Plays = [];
 let player2Plays = [];
 let stopGame = false;
+let rounds = 1;
 
 export default function GameBoard({onSelectSquare, symbol}) {
     const [gameBoard, setGameBoard] = useState(initialGameBoard);
@@ -32,8 +36,10 @@ export default function GameBoard({onSelectSquare, symbol}) {
                 updatedBoard[rowIndex][colIndex] = symbol;
                 checkPlays(rowIndex, colIndex);
 
-                onSelectSquare();
+                onSelectSquare(stopGame);
             }
+
+            rounds++;
 
             return updatedBoard;
         });
@@ -66,13 +72,13 @@ export default function GameBoard({onSelectSquare, symbol}) {
             }
         });
 
-        if(won) {
-            alert("winner");
+        if(rounds == 9 && !stopGame) {
+            alert("We have a draw");
         }
     }
 
     function winner() {
-        alert("Winner");
+        alert(symbol + " is the winner");
         stopGame = true;
     }
 
@@ -105,7 +111,7 @@ export default function GameBoard({onSelectSquare, symbol}) {
                     <ol>
                         {row.map((playerSymbol, colIndex) => (
                          <li key={colIndex}>
-                            <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button>
+                            <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>{playerSymbol == "X" ? <img height={100} src={mario}/> : playerSymbol == "O" ?  <img height={100} src={luigi}/> : null}</button>
                         </li>
                     ))}
                     </ol>
